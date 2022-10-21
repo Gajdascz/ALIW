@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>A Simple Quiz</title>
+<link href="../_css/site.css" rel="stylesheet">
+<script>
+
+  var score = 0;
+  var quiz = '-1'; // flag
+
+  // Prompts user to choose quiz type. Loops until valid input is given
+  function chooseQuiz() {
+    while (quiz !== '0' || quiz !== '1'){
+    quiz = prompt('Enter: 0 to load a generic quiz, 1 to create a custom quiz, or exit to cancel.')
+    if (quiz == '0'){
+      return loadGeneric();
+    } else if (quiz == '1'){
+      return createQuestions();
+    }else if (quiz == 'exit') {
+      return null;
+    } else {
+        quiz = '-1';  // keeping flag consistent
+      }
+    }
+  }
+
+  // Defines and returns a predefined set of questions and answers
+  function loadGeneric() {
+    questions = [
+    ['While speed is the rate at which an object moves over time. Velocity is the speed of an object in a specified ________ (fill in the blank)', 'direction'],
+    ['What is the acceleration of gravity on Earth in m/s^2? (Answer up to one decimial digit and non-negative)', '9.8'],
+    ['What is the equation for Force in Newtons(N)? (Answer using no spaces,full words, and mathematical symbols', 'mass*acceleration'],
+    ['What is the force of an object freely falling on Earth with a mass equal to 10kg?', '98N']
+    ];
+    return questions;
+  }
+
+  // User inputs a set of questions and answers for the quiz or done to proceed.
+  function createQuestions() {
+    var flag = true;
+    var i = 0;
+    questions = [];
+    while (flag) {
+        var question = prompt('Enter the question or \'done\' when you are finished.', '').toLowerCase();
+        if (question == 'done') { 
+            flag = false; 
+        } else { 
+            var answer = prompt('Enter the answer', '').toLowerCase();
+            questions[i] = [ question, answer ]
+            i++;
+        }
+    }
+    return questions;
+  }
+
+
+  // Checks if the users input matches the stored answer 
+  function askQuestion(question) {
+    var answer = prompt(question[0], '').toLowerCase();
+    if(answer == question[1].toLowerCase()) {
+      alert('Correct!');
+      score++;
+    } else {
+      alert('Sorry. The Correct Answer is ' + question[1]);
+    }
+  }
+
+  // Function used to refresh page
+  function refresh() {
+    window.location.reload();
+  }
+
+  // If an array of quiz questions and answers are generated and prompt to start the quiz
+  // Then iterates over the given array and calls the askQuestion function on the array stored in the array
+  questions = chooseQuiz();
+  if (questions !== null){
+    alert('Press OK to continue and start the quiz!');
+    for (var i = 0; i < questions.length; i++) {
+      askQuestion(questions[i]);
+    }
+  }
+
+</script>
+</head>
+
+<body>
+<div class="wrapper">
+  <header>
+    JAVASCRIPT <span class="amp">&amp;</span> jQUERY: THE&nbsp;MISSING&nbsp;MANUAL
+  </header>
+  <div class="content">
+    <div class="main">
+      <h1>A Simple Dynamic Quiz</h1>
+        <script>
+            if (questions == null) {
+              document.write('<p>No quiz was chosen.</p>');
+            }else {
+            var message = 'You got ' + score;
+            message += ' out of ' + questions.length;
+            message += ' questions correct.';
+            document.write('<p>' + message + '</p>');
+            }
+        </script>
+      <button type="submit" onclick="refresh()">Restart Quiz</button>
+      </div>
+  </div>
+  <footer>
+    <p>JavaScript &amp; jQuery: The Missing Manual, 3rd Edition, by <a href="http://sawmac.com/">David McFarland</a>. Published by <a href="http://oreilly.com/">O'Reilly Media, Inc</a>.</p>
+  </footer>
+</div>
+</body>
+</html>
